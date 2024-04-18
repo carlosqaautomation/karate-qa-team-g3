@@ -145,8 +145,8 @@ Feature: Ejercicios Clase 02
     }
     """
 
-    Scenario: Caso 15 - Crear un post con JSON en variable
-      * def body =
+  Scenario: Caso 15 - Crear un post con JSON en variable
+    * def body =
       """
       {
         'userId': 1,
@@ -154,10 +154,22 @@ Feature: Ejercicios Clase 02
         'body': 'Body de prueba'
       }
       """
-      Given url "https://jsonplaceholder.typicode.com"
-      And path "/posts"
-      And request body
-      When method post
-      Then status 201
-      * print response
-      And match response == read('estructura-response.json')
+    Given url "https://jsonplaceholder.typicode.com"
+    And path "/posts"
+    And request body
+    When method post
+    Then status 201
+    * print response
+    And match response == read('estructura-response.json')
+
+  Scenario Outline: Caso 16 - Crear un post con CSV
+    Given url "https://jsonplaceholder.typicode.com"
+    And path "/posts"
+    And request {'userId': <userId>,'title': <title>,'body': <body>}
+    When method post
+    Then status 201
+    * print response
+    And match response == read('estructura-response.json')
+
+    Examples:
+      | read('data.csv') |
